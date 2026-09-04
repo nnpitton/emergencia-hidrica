@@ -6,10 +6,17 @@ export const encuestaSchema = z.object({
   apellido_nombre: z.string().min(2, 'Obligatorio'),
   edad: z.coerce.number().int().positive(),
   estado_civil: z.string().optional(),
+  celular: z.string().optional(),
+  nivel_educativo: z.enum([
+    'primaria_completa', 'primaria_incompleta',
+    'secundaria_completa', 'secundaria_incompleta',
+    'terciario_completo', 'terciario_incompleto',
+  ], { required_error: 'Selecciona un nivel educativo' }),
 
-  // Zona del operativo (reemplaza a la antigua "localidad"). Catálogo fijo
-  // y chico (ver src/catalogos/zonas.js) — no requiere geolocalización.
-  zona_id: z.string().min(1, 'Seleccioná una zona'),
+
+  // Zona (Norte/Sur/Este/Oeste/Centro), localidad y domicilio.
+  zona_id: z.string().min(1, 'Selecciona una zona'),
+  localidad: z.string().min(1, 'Obligatorio'),
   domicilio: z.string().min(1, 'Obligatorio'),
   referencias_ubicacion: z.string().optional(),
   latitud: z.number().nullable().optional(),
@@ -37,8 +44,8 @@ export const encuestaSchema = z.object({
     ctx.addIssue({ path: ['fpp'], code: z.ZodIssueCode.custom,
       message: 'F.P.P. es obligatoria si hay embarazadas en el hogar' });
   }
-  if (data.cantidad_mayores + data.cantidad_menores > data.cantidad_integrantes) {
+  if (data.cantidad_mayores + data.cantidad_menores !== data.cantidad_integrantes) {
     ctx.addIssue({ path: ['cantidad_integrantes'], code: z.ZodIssueCode.custom,
-      message: 'La suma de mayores y menores no puede superar el total de integrantes' });
+      message: 'El total de integrantes debe ser igual a la suma de mayores y menores' });
   }
 });

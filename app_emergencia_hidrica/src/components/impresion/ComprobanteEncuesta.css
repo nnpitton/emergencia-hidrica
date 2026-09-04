@@ -1,0 +1,114 @@
+/* src/components/impresion/ComprobanteEncuesta.css
+ *
+ * Estrategia de impresión: la hoja imprimible vive siempre en el DOM pero
+ * oculta (display: none). Cuando hay algo para imprimir se le agrega la
+ * clase "hoja-impresion--activa" (ver TODO en ListadoEncuestas.jsx) y se
+ * llama a window.print(). El bloque @media print oculta todo lo demás de
+ * la página y muestra solo la hoja, para que salga limpia sin el resto
+ * de la interfaz alrededor.
+ */
+
+.hoja-impresion {
+  display: none;
+}
+
+.hoja-impresion--activa {
+  display: block;
+}
+
+@media print {
+  body * {
+    visibility: hidden;
+  }
+  .hoja-impresion,
+  .hoja-impresion * {
+    visibility: visible;
+  }
+  .hoja-impresion {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+}
+
+/* Estilo de la hoja en sí (se ve también en pantalla si se quita el
+   display:none temporalmente, útil para maquetar sin gastar papel). */
+
+.hoja-impresion {
+  font-family: Georgia, 'Times New Roman', serif;
+  color: #111;
+  padding: 24px;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.hoja-impresion-membrete {
+  text-align: center;
+  border-bottom: 2px solid #111;
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+}
+
+.hoja-impresion-organismo {
+  margin: 0;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.hoja-impresion-membrete h1 {
+  font-size: 16px;
+  margin: 6px 0 4px;
+}
+
+.hoja-impresion-meta {
+  font-size: 10px;
+  color: #444;
+  margin: 4px 0 0;
+}
+
+.hoja-impresion section {
+  border: 1px solid #999;
+  border-radius: 4px;
+  padding: 8px 12px;
+  margin-bottom: 10px;
+  break-inside: avoid;
+}
+
+.hoja-impresion h2 {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  margin: 0 0 6px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 4px;
+}
+
+.campo-impreso {
+  font-size: 11.5px;
+  padding: 2px 0;
+}
+
+.campo-impreso-etiqueta {
+  font-weight: bold;
+}
+
+.hoja-impresion-firmas {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 32px;
+  gap: 40px;
+}
+
+.hoja-impresion-firmas > div {
+  flex: 1;
+  text-align: center;
+}
+
+.linea-firma {
+  border-top: 1px solid #111;
+  margin-bottom: 4px;
+  height: 32px;
+}
